@@ -68,7 +68,22 @@ public class ProblemSolutions {
       //
       // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
       //
-      return -1;
+
+      PriorityQueue<Integer> queue = new PriorityQueue<Integer>();
+      for (int num : boulders) {
+        queue.add(-1*num);
+      }
+
+      while(queue.size() >= 2) {
+        int bigRock = queue.poll();
+        int littleRock = queue.poll();
+
+        if(bigRock < littleRock) {
+            queue.add(bigRock-littleRock);
+        }
+      }
+
+      return (queue.isEmpty() ? 0 : -1*queue.peek());
   }
 
 
@@ -94,7 +109,20 @@ public class ProblemSolutions {
         //
         //  YOUR CODE GOES HERE
         //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+
+        HashSet<String> mono = new HashSet<String>();
+        HashSet<String> duo = new HashSet<String>();
+
+        for(int i = 0; i < input.size(); i++) {
+            if(!mono.add(input.get(i))) {
+                duo.add(input.get(i));
+            }
+        }
+
+        ArrayList<String> output = new ArrayList<String>(duo);
+        Collections.sort(output);
+
+        return output;  // Make sure result is sorted in ascending order
 
     }
 
@@ -131,9 +159,23 @@ public class ProblemSolutions {
 
     public static ArrayList<String> pair(int[] input, int k) {
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        Arrays.sort(input);
+        ArrayList<String> result = new ArrayList<String>();
+
+        int low = 0;
+        int high = input.length-1;
+
+        while(low < high) {
+            int val = input[low] + input[high];
+            if(val < k) {
+                low++;
+            } else if (val > k) {
+                high--;
+            } else {
+                result.add("(" + input[low++] + ", " + input[high--] + ")");
+            }
+        }
+
+        return result;  // Make sure returned lists is sorted as indicated above
     }
 }

@@ -152,7 +152,12 @@ class PriorityQueue<E, P> {
     public Node add(E e, P priority) {
 
         // YOUR CODE GOES HERE
-        return null;
+
+        Node item = new Node(e, priority, this.size());
+        tree.add(item);
+        this.pullUp(item.idx);
+
+        return item;
     }
 
 
@@ -169,7 +174,21 @@ class PriorityQueue<E, P> {
     public boolean contains(E e) {
 
         // ADD YOUR CODE HERE
-        return false;
+
+        return containsHelper(e, this.peek());
+    }
+
+    public boolean containsHelper(E e, Node node) {
+        
+        boolean result = e.equals(node.value);
+        if (leftChild(node.idx) < tree.size()) {
+            result = result || containsHelper(e, tree.get(leftChild(node.idx)));
+        }
+        if (rightChild(node.idx) < tree.size()) {
+            result = result || containsHelper(e, tree.get(rightChild(node.idx)));
+        }
+
+        return result;
     }
 
 
